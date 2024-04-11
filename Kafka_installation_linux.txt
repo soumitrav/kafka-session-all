@@ -1,0 +1,111 @@
+Install the Confluent Community Package on the Broker Nodes
+
+On all three nodes, add the GNU Privacy Guard (GPG) key plus package repository, and then install Confluent Community, plus Java. The format should look like this:
+
+Step 1:
+
+sudo cloud_user
+wget -qO - https://packages.confluent.io/deb/7.6/archive.key | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://packages.confluent.io/deb/7.6 stable main"
+sudo add-apt-repository "deb https://packages.confluent.io/clients/deb $(lsb_release -cs) main"
+sudo apt-get update
+sudo apt-get update && sudo apt-get install -y openjdk-8-jre-headless confluent-community-2.13
+
+========
+Optional:
+Entire Confluent Platform: sudo apt-get install confluent-platform
+========
+
+Step2: 
+Configure Zookeeper
+
+On all three nodes, edit the hosts file:
+sudo vi /etc/hosts
+Add the following entries to the hosts file:
+10.0.1.101 zoo1
+10.0.1.102 zoo2
+10.0.1.103 zoo3
+
+
+Step3:
+
+Edit the zookeeper config file:
+sudo vi /etc/kafka/zookeeper.properties
+Delete the contents of the config file and add the following:
+tickTime=2000
+dataDir=/var/lib/zookeeper/
+clientPort=2181
+initLimit=5
+syncLimit=2
+server.1=zoo1:2888:3888
+server.2=zoo2:2888:3888
+server.3=zoo3:2888:3888
+autopurge.snapRetainCount=3
+autopurge.purgeInterval=24
+
+
+Step4:
+
+Set up the zookeeper ID for each server:
+sudo vi /var/lib/zookeeper/myid
+
+
+
+
+On each server, set the contents of /var/lib/zookeeper/myid to the server's ID. On Node 1, enter 1, on Node 2, enter 2, and lastly on Node 3, enter 3:
+
+Step5:
+
+Configure Kafka
+
+Edit the kafka config file:
+sudo vi /etc/kafka/server.properties
+Edit the broker.id and zookeeper.connect in the config file. Set the broker ID to the appropriate ID for each server (1 on Node 1, 2 on Node 2, and so on).
+
+Set zookeeper.connect to zoo1:2181,zoo2:2181,zoo3:2181
+
+broker.id=<server id 1, 2, or 3>
+zookeeper.connect=zoo1:2181,zoo2:2181,zoo3:2181
+
+listeners=PLAINTEXT://zoo3:9092
+
+# Listener name, hostname and port the broker will advertise to clients.
+# If not set, it uses the value for "listeners".
+advertised.listeners=PLAINTEXT://<public_address>:9092
+
+
+Step6:
+
+Start Zookeeper and Kafka
+
+Start and enable the Zookeeper and Kafka services:
+sudo systemctl start confluent-zookeeper
+sudo systemctl enable confluent-zookeeper
+sudo systemctl start confluent-kafka
+sudo systemctl enable confluent-kafka
+
+Step7:
+
+sudo systemctl stop confluent-zookeeper
+sudo systemctl disable confluent-zookeeper
+sudo systemctl stop confluent-kafka
+sudo systemctl disable confluent-kafka
+
+
+Both services should be active (running) on all three servers. Check the services to make sure they are running:
+sudo systemctl status confluent*
+We can test our cluster by listing the current topics:
+kafka-topics --list --bootstrap-server zoo1:9092,zoo2:9092,zoo3:9092
+The output should look like this:
+
+_confluent.support.metrics
+
+command to create kafka topic
+
+kafka-topics --bootstrap-server zoo1:9092,zoo2:9092,zoo2:9092 --create --topic my-topic --partitions 3 --replication-factor 2
+kafka-topics --bootstrap-server zoo1:9092,zoo2:9092,zoo2:9092 --create --topic my-topic-1 --partitions 3 --replication-factor 2
+
+kafka-console-producer --bootstrap-server zoo1:9092,zoo2:9092,zoo2:9092 --topic my-topic
+kafka-console-consumer --bootstrap-server zoo1:9092,zoo2:9092,zoo2:9092 --topic my-topic --from-beginning
+
+kafka-consumer-groups --bootstrap-server zoo1:9092,zoo2:9092,zoo2:9092 --topic my-topic --describe
