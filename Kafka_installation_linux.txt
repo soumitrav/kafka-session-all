@@ -109,3 +109,13 @@ kafka-console-producer --bootstrap-server zoo1:9092,zoo2:9092,zoo2:9092 --topic 
 kafka-console-consumer --bootstrap-server zoo1:9092,zoo2:9092,zoo2:9092 --topic my-topic --from-beginning
 
 kafka-consumer-groups --bootstrap-server zoo1:9092,zoo2:9092,zoo2:9092 --topic my-topic --describe
+
+//Docker Commands
+
+docker container ls -a
+docker exec -it broker sh
+kafka-console-producer --bootstrap-server localhost:9092 --topic streams-input-topic --property "parse.key=true" --property "key.separator=:"
+
+Kafka-console-consumer --bootstrap-server localhost:9092 --topic streams-input-topic --property "parse.key=true" --property "key.separator=:"
+
+kafka-console-consumer --bootstrap-server localhost:9092 --topic streams-output-topic --from-beginning
