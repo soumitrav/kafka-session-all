@@ -1,0 +1,26 @@
+
+docker container ls -a
+docker exec -it broker sh
+kafka-console-producer --bootstrap-server localhost:9092 --topic streams-input-topic --property "parse.key=true" --property "key.separator=:"
+
+kafka-console-consumer --bootstrap-server localhost:9092 --topic streams-output-topic --from-beginning --property print.key=true
+
+
+//stateless transformation
+
+kafka-console-producer --bootstrap-server localhost:9092 --topic stateless-transformations-input-topic --property "parse.key=true" --property "key.separator=:"
+
+kafka-console-consumer --bootstrap-server localhost:9092 --topic stateless-transformations-output-topic --from-beginning --property print.key=true
+
+
+//Aggregations
+kafka-console-producer --broker-list localhost:9092 --topic aggregations-input-topic --property parse.key=true --property key.separator=:
+//output topic consumers
+kafka-console-consumer --bootstrap-server localhost:9092 --topic aggregations-output-charactercount-topic --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.IntegerDeserializer
+kafka-console-consumer --bootstrap-server localhost:9092 --topic aggregations-output-count-topic --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+kafka-console-consumer --bootstrap-server localhost:9092 --topic aggregations-output-reduce-topic --property print.key=true
+
+//joins
+
+
+//

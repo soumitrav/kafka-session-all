@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 public class kafkaProducerApp {
     public static void main(String []args){
+        String inputTopic = "streams-input-topic";
+
         Properties producerProperties = new Properties();
         producerProperties.put("bootstrap.servers", "localhost:9092"); // Kafka broker addresses
         producerProperties.put("key.serializer", StringSerializer.class.getName());
@@ -18,9 +20,9 @@ public class kafkaProducerApp {
 
         Scanner s  = new Scanner(System.in);
         int i = 0;
-        while(i < 10) {
+        while(i < 100) {
             String input = s.nextLine();
-            ProducerRecord<String, String> record = new ProducerRecord<>("inputTopic_Stream",
+            ProducerRecord<String, String> record = new ProducerRecord<>(inputTopic,
                     input, input);
             producer.send(record);
         }
