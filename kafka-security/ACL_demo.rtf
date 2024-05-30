@@ -1,0 +1,115 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 AndaleMono;\f1\fnil\fcharset0 .SFNS-Regular_wdth_opsz110000_GRAD_wght1F40000;\f2\fnil\fcharset0 HelveticaNeue-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red251\green0\blue98;\red251\green0\blue98;\red180\green178\blue199;
+\red15\green12\blue28;\red251\green0\blue98;\red251\green0\blue98;\red199\green199\blue224;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c8627\c45882;\cssrgb\c100000\c8627\c45882\c20000;\cssrgb\c75686\c75294\c81961;
+\cssrgb\c7451\c5882\c14510;\cssrgb\c100000\c8627\c45882;\cssrgb\c100000\c8627\c45882\c20000;\cssrgb\c81961\c82353\c90196;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid1\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid101\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid201\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid301\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid401\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid5}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}}
+\margl1440\margr1440\vieww29740\viewh16300\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs32 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+\cf2 ssh cloud_user@
+\f1 \cf4 \cb5 \strokec4 52.203.230.161
+\f0 \cf2 \cb3 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \
+keytool -v -list -keystore /var/private/ssl/client.keystore.jks\
+\
+kafka-acls --authorizer-properties zookeeper.connect=localhost:2181 --topic \cf6 \cb7 \outl0\strokewidth0 inventory_purchases\cf2 \cb3 \outl0\strokewidth0 \strokec2  --list\
+\
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa80\partightenfactor0
+\ls1\ilvl0
+\f1 \cf8 \cb5 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 Create the ACL.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0 \cf2 \cb3 \strokec2 kafka-acls --authorizer-properties zookeeper.connect=localhost:2181 --add --allow-principal User:kafkauser --operation read --operation write --topic inventory_purchases\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa80\partightenfactor0
+\ls2\ilvl0
+\f1 \cf8 \cb5 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 Verify that the read access works by consuming from the topic.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0 \cf2 \cb3 \strokec2 kafka-console-consumer --bootstrap-server zoo1:9093 --topic inventory_purchases --from-beginning --consumer.config client-ssl.properties\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf8 \cb5 \strokec8 Data from that topic should be displayed. Pressing\'a0
+\f2\b Ctrl+C
+\f1\b0 \'a0will stop the command so that we can continue.\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa80\partightenfactor0
+\ls3\ilvl0\cf8 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 Verify that the write access works by writing data to the topic.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0 \cf2 \cb3 \strokec2 kafka-console-producer --broker-list zoo1:9093 --topic inventory_purchases --producer.config client-ssl.properties\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf8 \cb5 \strokec8 After running this command, provide some sample data such as "test data" or "another test" and press\'a0
+\f2\b Enter
+\f1\b0 . If no errors are displayed, the write was successful. Press\'a0
+\f2\b Ctrl+C
+\f1\b0 \'a0to stop the command to continue.\
+\
+\
+\
+=================\
+\
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa80\partightenfactor0
+\ls4\ilvl0\cf8 \cb5 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 List the ACLs for the topic.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0 \cf2 \cb3 \strokec2 kafka-acls --authorizer-properties zookeeper.connect=localhost:2181 --topic \cf6 \cb7 \outl0\strokewidth0 inventory_purchases\cf2 \cb3 \outl0\strokewidth0 \strokec2  --list\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa80\partightenfactor0
+\ls5\ilvl0
+\f1 \cf8 \cb5 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 Remove the existing ACL for the topic.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0 \cf2 \cb3 \strokec2 kafka-acls --authorizer-properties zookeeper.connect=localhost:2181 --topic \cf6 \cb7 \outl0\strokewidth0 inventory_purchases\cf2 \cb3 \outl0\strokewidth0 \strokec2  --remove\
+\
+\
+//Deny by default: because allowing just write operation for the kafkauser on the topic.\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 kafka-acls --authorizer-properties zookeeper.connect=localhost:2181 --add --allow-principal User:kafkauser --operation write --topic inventory_purchases\
+\
+\
+\
+kafka-console-consumer --bootstrap-server zoo1:9093 --topic inventory_purchases --from-beginning --consumer.config client-ssl.properties\
+[2024-05-28 05:54:01,206] WARN [Consumer clientId=consumer-1, groupId=console-consumer-80609] Not authorized to read from topic inventory_purchases. (org.apache.kafka.clients.consumer.internals.Fetcher)\
+[2024-05-28 05:54:01,210] ERROR Error processing message, terminating consumer process:  (kafka.tools.ConsoleConsumer$)\
+org.apache.kafka.common.errors.TopicAuthorizationException: Not authorized to access topics: [inventory_purchases]\
+Processed a total of 0 messages\
+\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb7 \outl0\strokewidth0 kafka-acls --authorizer-properties zookeeper.connect=localhost:2181 --add --allow-principal User:kafkauser --operation read --operation write --topic inventory_purchases\
+\
+\
+//Allow by default after removing all the ACLs\
+\
+kafka-acls --authorizer-properties zookeeper.connect=localhost:2181 --topic inventory_purchases --remove\
+\
+kafka-console-consumer --bootstrap-server zoo1:9093 --topic inventory_purchases --from-beginning --consumer.config client-ssl.properties\
+apples:10\
+oranges:5\
+tangerines:11\
+\
+\
+\cf2 \cb3 \outl0\strokewidth0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \
+}
