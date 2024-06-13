@@ -1,0 +1,33 @@
+{
+  "fields": [
+    {
+      "name": "city",
+      "type": "string"
+    },
+    {
+      "name": "population",
+      "type": "string"
+    },
+    {
+      "name": "isMetro",
+      "type": "boolean"
+    },
+    {
+      "default": 0,
+      "name": "maxTempp",
+      "type": "int"
+    },
+    {
+      "default": 0,
+      "name": "minTempp",
+      "type": "int"
+    },
+    {
+      "name": "transport",
+      "type": "string"
+    }
+  ],
+  "name": "CityInfo",
+  "namespace": "com.example.avro.weather",
+  "type": "record"
+}

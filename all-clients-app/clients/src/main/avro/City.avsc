@@ -1,0 +1,11 @@
+{
+  "name": "City",
+  "namespace": "com.example.avro.weather",
+  "type": "record",
+  "fields": [
+    {
+      "name": "city",
+      "type": "string"
+    }
+  ]
+}
